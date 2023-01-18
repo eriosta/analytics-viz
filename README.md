@@ -1,2 +1,2 @@
-# analytics-viz
-DS 5023 - Data Organization and Visualization
+# Data Organization and Visualization
+

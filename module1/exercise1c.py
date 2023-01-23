@@ -7,6 +7,19 @@ import sys, os
 
 # Roll die
 def rollDie( m ):
+    """
+    This function creates a random number between 1 and m inclusive and returns it.
+
+    Parameters
+    ----------
+    m : int
+        Upper bound of random number
+
+    Returns
+    -------
+    int
+        A random number between 1 and m inclusive
+    """
     die = random.randrange( 1, m + 1 ) 
     return die
 
@@ -26,6 +39,24 @@ def enablePrint():
 
 # Simulate games
 def simulateGames(n,verbose=False):
+
+    """
+    This function simulateGame simulates several rounds of the game. See the rules above for how each game
+    round is played.
+    
+    Parameters
+    ----------
+    n : int
+        The number of games
+
+    verbose : bool
+        Show all print statements throughout the game except the final print statement with the score board after n games. Default is False.
+        
+    Returns
+    -------
+    wins : dictionary
+        A dictionary with keys 'player', 'banker', 'tie'. All the values should be zero.
+    """
 
     if verbose==True:
         enablePrint()
@@ -89,6 +120,21 @@ def simulateGames(n,verbose=False):
     return wins
     
 def visualizeResults(n):
+    """
+    This function creates a bar plot of frequencies for each outcome using the seaborn package. 
+    It will show the frequency of outcomes for the PLAYER, BANKER, and TIE out of 100%. Recall
+    that wins dictionary parameter has a total count of outcomes and that you will need
+    to find the percentage of occurrences. 
+    
+    Parameters
+    ----------
+    n : int
+        The number of games
+        
+    Returns
+    -------
+    None
+    """
     wins = simulateGames(n)
     players = list(wins.keys())
     scores = [wins[k] for k in players]

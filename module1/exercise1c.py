@@ -38,7 +38,7 @@ def enablePrint():
     sys.stdout = sys.__stdout__
 
 # Simulate games
-def simulateGames(n,verbose=False):
+def simulateGames(n,verbose=True):
 
     """
     This function simulateGame simulates several rounds of the game. See the rules above for how each game
@@ -142,4 +142,4 @@ def visualizeResults(n):
     plt.show()
 
 # Visualize games
-visualizeResults(n=200000)
+visualizeResults(n=10)

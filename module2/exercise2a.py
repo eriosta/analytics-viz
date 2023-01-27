@@ -34,24 +34,24 @@ fig = plt.figure( figsize=(11,8) )
 plt.show()
 
 
-a2D = np.array([['AAPL',20],['BYND',30],['CVX',40],['GME',50],['MRNA',60]])
+# a2D = np.array([['AAPL',20],['BYND',30],['CVX',40],['GME',50],['MRNA',60]])
 
 
-price_data = yf.download(
-    tickers=list(a2D[:,0]), 
-    start='2020-05-01', end='2020-05-30', 
-    interval='1d' )[ 'Close' ] 
+# price_data = yf.download(
+#     tickers=list(a2D[:,0]), 
+#     start='2020-05-01', end='2020-05-30', 
+#     interval='1d' )[ 'Close' ] 
 
 
-price_data['AAPL'] = price_data['AAPL'] * int(a2D[0,1])
-price_data['BYND'] = price_data['BYND'] * int(a2D[1,1])
-price_data['CVX'] = price_data['CVX'] * int(a2D[2,1])
-price_data['GME'] = price_data['GME'] * int(a2D[3,1])
-price_data['MRNA'] = price_data['MRNA'] * int(a2D[4,1])
+# price_data['AAPL'] = price_data['AAPL'] * int(a2D[0,1])
+# price_data['BYND'] = price_data['BYND'] * int(a2D[1,1])
+# price_data['CVX'] = price_data['CVX'] * int(a2D[2,1])
+# price_data['GME'] = price_data['GME'] * int(a2D[3,1])
+# price_data['MRNA'] = price_data['MRNA'] * int(a2D[4,1])
 
-price_data = pd.melt(price_data, value_vars=['AAPL','BYND','CVX','GME','MRNA'],ignore_index=False)
-price_data.rename(columns={'value':'Price','variable':'Stock'},inplace=True)
+# price_data = pd.melt(price_data, value_vars=['AAPL','BYND','CVX','GME','MRNA'],ignore_index=False)
+# price_data.rename(columns={'value':'Price','variable':'Stock'},inplace=True)
 
 
-sns.lineplot(data=price_data, x=price_data.index,y="Price", hue="Stock")
-plt.show()
+# sns.lineplot(data=price_data, x=price_data.index,y="Price", hue="Stock")
+# plt.show()

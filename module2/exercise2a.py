@@ -1,47 +1,52 @@
-# You will do the following
-# 1. The starter code has been created for you. Specifically, there is an example of how you will access historical 
-    #  stock data from Yahoo Finance module. Adapt and use this sample code to get the required data for the stocks above.
-    #  The stock symbols are provided above, which is needed for the TICKERS parameter.
-# 2. Create a 2D NumPy array which represent the number of shares per stock.
-    # Then use the dot product, to find the value of the entire portfolio for each day in May.
-    # Create a data frame with the dates and the portfolio values.
-# 3. Create a lineplot using seaborn that plots the prices for each stock. 
-    # The x axis are the days (they can just be days numbered 0 through 20). 
-    # The y axis is the price of the stocks. 
-    # HINT: use the pd.melt() function to reconfigure the DF so you can plot 
-    # multiple lines using the HUE parameter in the lineplot() function. 
-    # After calling pd.melt(), name the value column 'Price' and the variable (column) name 'Stock'.
-
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 import yfinance as yf
 import pandas as pd
+import datetime
 
-# This is an example code to download the historic stock price data during March 2020 for AMC and TSLA (Tesla)
-# stock. It will collect the data in intervals of one day. You will get a DataFrame of closing 
-# prices for each day. The index of row is the TimeStamp for each day. This line also extracts the 
-# 'Close' column as we are using that to determine # the price of each stock. 
-price_data = yf.download( tickers=['AMC','TSLA'], start='2020-03-01', end='2020-03-30', interval='1d' )[ 'Close' ] 
-print( price_data )
+# Order: AAPL, BYND, CVX, GME, MRNA
+a2D = np.array([[20],[30],[40],[50],[60]])
 
-# type: ignore
-a2D = np.array([['AAPL',20],['BYND',30],['CVX',40],['GME',50],['MRNA',60]])
+stocks = ['AAPL', 'BYND', 'CVX', 'GME', 'MRNA']
 
 price_data = yf.download(
-    tickers=list(a2D[:,0]), 
+    tickers=stocks, 
     start='2020-05-01', end='2020-05-30', 
     interval='1d' )[ 'Close' ] 
 
-price_data['AAPL'] = price_data['AAPL'] * int(a2D[0,1])
-price_data['BYND'] = price_data['BYND'] * int(a2D[1,1])
-price_data['CVX'] = price_data['CVX'] * int(a2D[2,1])
-price_data['GME'] = price_data['GME'] * int(a2D[3,1])
-price_data['MRNA'] = price_data['MRNA'] * int(a2D[4,1])
+for i, row in price_data.iterrows():
+    i = datetime.date(i.year, i.month, i.day)
+    print(f"Total earnings on %s: USD %s" %
+            (i, np.dot(row[stocks].to_numpy(), a2D)[0]))
 
-price_data = pd.melt(price_data, value_vars=['AAPL','BYND','CVX','GME','MRNA'],ignore_index=False)
-price_data.rename(columns={'value':'Price','variable':'Stock'},inplace=True)
+
+#1 
+for col in stocks:
+    for i, row in price_data.iterrows():
+        max = np.max(price_data[col])
+        min = np.min(price_data[col])
+        diff = max - min
+        min_date = price_data.index[(price_data[col] == min)]
+        min_date = min_date.format(formatter=lambda x: x.strftime('%Y/%m/%d'))[0]
+    print(f"Stock: %s, Min: %s, Min Date: %s, Diff: %s" % (col, min, min_date, diff))
+
+price_data_melt = pd.melt(price_data, value_vars=['AAPL','BYND','CVX','GME','MRNA'],ignore_index=False)
+price_data_melt.rename(columns={'value':'Price','variable':'Stock'},inplace=True)
 
 fig = plt.figure( figsize=(11,8) )
-sns.lineplot(data=price_data, x=price_data.index,y="Price", hue="Stock")
+sns.lineplot(data=price_data_melt, x=price_data_melt.index,y="Price", hue="Stock")
 plt.show()
+
+
+f, (ax1, ax2) = plt.subplots(ncols=1, nrows=2, sharex=True)
+sns.lineplot(data=price_data_melt, x=price_data_melt.index,y="Price", hue="Stock", ax=ax1)
+sns.lineplot(data=price_data_melt, x=price_data_melt.index,y="Price", hue="Stock", ax=ax2)
+ax2.set_ylim(40, 150)
+ax1.set_ylim(0.75, 1.6)
+plt.show()
+
+
+
+
+

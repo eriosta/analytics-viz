@@ -18,7 +18,8 @@ def convertString( sentence ):
     old_words = ''
     new_words = ''
     pattern_found = ''
-
+    new_sentence = {}
+    
     conversions = {
     ('inch','centimeter') : (1,2.54),
     ('foot','meter') : (1,0.3048),
@@ -26,26 +27,38 @@ def convertString( sentence ):
     ('mile','kilometer') : (1,1.60934),
     ('fahrenheit','celsius') : (f,c)
     }
-
-    word_list = []
-
-    for k,v in conversions.items():
-        word_list.append(k[0])
-
-        if k[0] in sentence:
-            from_unit = k[0]
-            to_unit = k[1]
-            to_magnitude = v[1]
-
-    for word in word_list:
-        if word in sentence:
-            pattern = rf'(\w+)\s*(?:\b(?:{"|".join(word_list)})\b)'
-            pattern_found = re.findall(pattern, sentence)[0]
     
-            old_words = pattern_found + ' ' + word
+    keys=[]
     
-    new_words = str(int(pattern_found) * to_magnitude) + ' ' + to_unit    
+    for k in conversions.keys():
+        keys.append(k[0])
+    
+    for key in keys:
 
-    return new_words, old_words
+        if key in sentence:
+        
+            for k,v in conversions.items():
 
-convertString("55 inch")
+                if k[0] in sentence:
+                    word = k[0]
+                    to_unit = k[1]
+                    to_magnitude = v[1]
+
+                    pattern = rf'(\w+)\s*(?:\b(?:{"|".join([word])})\b)'
+                    pattern_found = re.findall(pattern, sentence)[0]
+            
+                    old_words = pattern_found + ' ' + word
+                    
+                    if (str(int(pattern_found) * to_magnitude) + ' ' + to_unit) == (str(int(pattern_found) * to_magnitude) + ' ' + to_unit ):
+                        pass
+                    
+                    new_words = str(int(pattern_found) * to_magnitude) + ' ' + to_unit    
+                                        
+                    if new_words not in new_sentence.keys():
+                        new_sentence[new_words] = old_words
+                        
+    return new_sentence
+                        
+                        
+
+convertString("55 inch and 100 foot")

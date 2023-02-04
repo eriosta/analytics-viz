@@ -9,7 +9,7 @@ import re
 
 def convertString( sentence ):
     f = np.nan
-    c = (f-32)*5/9
+    c = np.nan
     pattern = ''
     res = np.nan
     from_unit = np.nan
@@ -49,13 +49,20 @@ def convertString( sentence ):
             
                     old_words = pattern_found + ' ' + word
                     
+                    if word == 'fahrenheit':
+                        f = int(pattern_found)
+                        to_magnitude = round((f-32)*5/9,2)
+                        pattern_found = 1
+
                     new_words = str(int(pattern_found) * to_magnitude) + ' ' + to_unit    
                                         
                     if new_words not in new_sentence.keys():
                         new_sentence[new_words] = old_words
                         
-    return new_sentence
-                        
-                        
-
-convertString("55 inch and 100 foot")
+    for new_words,old_words in new_sentence.items():
+        if old_words in sentence:
+            sentence = re.sub(old_words,new_words,sentence)
+            
+    return sentence
+                             
+convertString("55 inch and 100 foot and 30 fahrenheit")

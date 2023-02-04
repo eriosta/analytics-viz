@@ -49,9 +49,6 @@ def convertString( sentence ):
             
                     old_words = pattern_found + ' ' + word
                     
-                    if (str(int(pattern_found) * to_magnitude) + ' ' + to_unit) == (str(int(pattern_found) * to_magnitude) + ' ' + to_unit ):
-                        pass
-                    
                     new_words = str(int(pattern_found) * to_magnitude) + ' ' + to_unit    
                                         
                     if new_words not in new_sentence.keys():

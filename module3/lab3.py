@@ -21,10 +21,14 @@ def convertString( sentence ):
 
     conversions = {
     ('inch','centimeter') : (1,2.54),
+    ('inches','centimeter') : (1,2.54),
     ('foot','meter') : (1,0.3048),
+    ('feet','meter') : (1,0.3048),
     ('yard','meter') : (1,0.9144),
     ('mile','kilometer') : (1,1.60934),
-    ('fahrenheit','celsius') : (f,c)
+    ('mile','kilometer') : (1,1.60934),
+    ('fahrenheit','celsius') : (f,c),
+    ('°F','celsius') : (f,c)
     }
 
     word_list = []
@@ -46,6 +50,8 @@ def convertString( sentence ):
     
     new_words = str(int(pattern_found) * to_magnitude) + ' ' + to_unit    
 
-    return new_words, old_words
+    return sentence.replace(old_words, new_words)
 
-convertString("55 inch")
+
+sentence = "Wow! That was 100 inch!"
+convertString(sentence)

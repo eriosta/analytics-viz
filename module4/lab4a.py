@@ -71,5 +71,3 @@ plt.xlabel("Category")
 plt.ylabel("Average People per Prize")
 plt.xticks(rotation=90)
 plt.show()
-
-# Plotting the box plot of
